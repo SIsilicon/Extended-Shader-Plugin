@@ -8,9 +8,20 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "ResourceFormatLoader",
+"class": "ResourceLoaderExtShader",
+"language": "GDScript",
+"path": "res://addons/sisilicon.shaders.extended-shader/ResourceLoaderExtShader.gd"
+}, {
+"base": "ResourceFormatSaver",
+"class": "ResourceSaverExtShader",
+"language": "GDScript",
+"path": "res://addons/sisilicon.shaders.extended-shader/ResourceSaverExtShader.gd"
+} ]
 _global_script_class_icons={
-
+"ResourceLoaderExtShader": "",
+"ResourceSaverExtShader": ""
 }
 
 [application]

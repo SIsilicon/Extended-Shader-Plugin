@@ -1,0 +1,54 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/sisilicon.shaders.extended-shader/ExtShaderEditor.gd" type="Script" id=1]
+
+[sub_resource type="ButtonGroup" id=1]
+
+[node name="VBoxContainer" type="VBoxContainer"]
+margin_right = 1024.0
+margin_bottom = 600.0
+script = ExtResource( 1 )
+
+[node name="Tools" type="HBoxContainer" parent="."]
+margin_right = 1024.0
+margin_bottom = 20.0
+
+[node name="Search" type="MenuButton" parent="Tools"]
+margin_right = 54.0
+margin_bottom = 20.0
+group = SubResource( 1 )
+text = "Search"
+items = [ "Find", null, 0, false, false, 0, 0, null, "", false, "Find Next", null, 0, false, false, 1, 0, null, "", false, "Find Previous", null, 0, false, false, 2, 0, null, "", false, "Replace", null, 0, false, false, 3, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "Goto Line", null, 0, false, false, 4, 0, null, "", false ]
+switch_on_hover = true
+
+[node name="Edit" type="MenuButton" parent="Tools"]
+margin_left = 58.0
+margin_right = 94.0
+margin_bottom = 20.0
+group = SubResource( 1 )
+text = "Edit"
+items = [ "Undo", null, 0, false, false, 5, 0, null, "", false, "Redo", null, 0, false, false, 6, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "Cut", null, 0, false, false, 7, 0, null, "", false, "Copy", null, 0, false, false, 8, 0, null, "", false, "Paste", null, 0, false, false, 9, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "Select All", null, 0, false, false, 10, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "Move Up", null, 0, false, false, 11, 0, null, "", false, "Move Down", null, 0, false, false, 12, 0, null, "", false, "Indent Left", null, 0, false, false, 13, 0, null, "", false, "Indent Right", null, 0, false, false, 14, 0, null, "", false, "Delete Line", null, 0, false, false, 15, 0, null, "", false, "Toggle Comment", null, 0, false, false, 16, 0, null, "", false, "Clone Down", null, 0, false, false, 17, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "Complete Symbol", null, 0, false, false, 18, 0, null, "", false ]
+switch_on_hover = true
+
+[node name="TextEdit" type="TextEdit" parent="."]
+margin_top = 24.0
+margin_right = 1024.0
+margin_bottom = 582.0
+size_flags_vertical = 3
+highlight_current_line = true
+syntax_highlighting = true
+show_line_numbers = true
+
+[node name="Cursor" type="Label" parent="."]
+margin_top = 586.0
+margin_right = 1024.0
+margin_bottom = 600.0
+text = "(  0,  0  )"
+align = 2
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+[connection signal="cursor_changed" from="TextEdit" to="." method="_on_TextEdit_cursor_changed"]
+[connection signal="text_changed" from="TextEdit" to="." method="_on_TextEdit_text_changed"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

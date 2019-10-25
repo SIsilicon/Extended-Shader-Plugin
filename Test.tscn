@@ -1,34 +1,47 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Test.gd" type="Script" id=1]
-[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://addons/sisilicon.shaders.extended-shader/icon_extended_shader.svg" type="Texture" id=2]
 [ext_resource path="res://addons/sisilicon.shaders.extended-shader/ExtendedShader.gd" type="Script" id=3]
+[ext_resource path="res://icon.png" type="Texture" id=4]
 
-[sub_resource type="Shader" id=3]
+[sub_resource type="Shader" id=2]
 code = "shader_type canvas_item;
 
-#define FLIP_Y
 
-#define SCALE 1.6
+vec2 rotate(vec2 v, float r) {
+	float s = sin(r);
+	float c = cos(r);
+	mat2 m = mat2(vec2(c, -s), vec2(s, c));
+	return m * v;
+}
+
+
+
+
+uniform float rotation;
+uniform vec2 translation;
 
 void fragment() {
-	vec2 uv = UV;
+	vec2 uv = UV - translation;
+	uv = rotate(uv + translation - 0.5, rotation) - translation + 0.5;
 	
-#ifdef FLIP_Y
-	uv.y = 1.0 - uv.y;
-#endif
-	
-	uv = mix(vec2(0.5), uv, SCALE);
-	
-	COLOR = texture(TEXTURE, uv);
-}"
+	COLOR = texture(TEXTURE, mod(uv, 1.0));
+}
+
+"
 script = ExtResource( 3 )
 __meta__ = {
 "_editor_icon": ExtResource( 2 )
 }
+defines = {
+"REPEAT_TEX": null
+}
 
-[sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 3 )
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
+shader_param/rotation = -1.1
+shader_param/translation = Vector2( 1.31, 0.57 )
 
 [node name="Control" type="HBoxContainer"]
 anchor_right = 1.0
@@ -39,23 +52,6 @@ script = ExtResource( 1 )
 margin_right = 510.0
 margin_bottom = 600.0
 size_flags_horizontal = 3
-text = "shader_type canvas_item;
-
-#define FLIP_Y
-
-#define SCALE 1.6
-
-void fragment() {
-	vec2 uv = UV;
-	
-#ifdef FLIP_Y
-	uv.y = 1.0 - uv.y;
-#endif
-	
-	uv = mix(vec2(0.5), uv, SCALE);
-	
-	COLOR = texture(TEXTURE, uv);
-}"
 syntax_highlighting = true
 show_line_numbers = true
 
@@ -68,8 +64,13 @@ readonly = true
 show_line_numbers = true
 
 [node name="Sprite" type="Sprite" parent="."]
-material = SubResource( 2 )
-position = Vector2( 508.411, 266.856 )
+material = SubResource( 3 )
+position = Vector2( 511.502, 508.139 )
 scale = Vector2( 2.70382, 2.70382 )
-texture = ExtResource( 2 )
+texture = ExtResource( 4 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
 [connection signal="text_changed" from="TextEdit" to="." method="_on_TextEdit_text_changed"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
