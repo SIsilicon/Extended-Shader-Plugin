@@ -12,6 +12,8 @@ It currently supports the following directives.
 * #endif
 * #include
 
+You need to enable the plugin in the `Project Settings` first and close and open the project before you can use it.
+
 ## Making an extended shader
 
 To make an extended shader create a new resource via the inspector or the file system. Search for `Extended Shader` and create it.
